@@ -1,33 +1,79 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { getTranslation } from "@/constants/translations";
+import { useApp } from "@/context/AppContext";
+import { Tabs } from "expo-router";
+import { BookOpen, Clock, Home, Map, MapPin } from "lucide-react-native";
+import React from "react";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { language } = useApp();
+
+  const t = (
+    key: keyof typeof import("@/constants/translations").translations.en,
+  ) => getTranslation(language, key);
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: "#0D7C66",
+        tabBarInactiveTintColor: "#999999",
         headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+        tabBarStyle: {
+          height: 70,
+          paddingBottom: 10,
+          paddingTop: 10,
+          backgroundColor: "#FFFFFF",
+          borderTopWidth: 1,
+          borderTopColor: "#E0E0E0",
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "600" as const,
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: t("home"),
+          tabBarIcon: ({ color, size }) => (
+            <Home color={color} size={size} strokeWidth={2.5} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="map"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: t("liveMap"),
+          tabBarIcon: ({ color, size }) => (
+            <Map color={color} size={size} strokeWidth={2.5} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="prayer"
+        options={{
+          title: t("prayerQibla"),
+          tabBarIcon: ({ color, size }) => (
+            <Clock color={color} size={size} strokeWidth={2.5} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="duas"
+        options={{
+          title: t("duas"),
+          tabBarIcon: ({ color, size }) => (
+            <BookOpen color={color} size={size} strokeWidth={2.5} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="facilities"
+        options={{
+          title: "Nearby",
+          tabBarIcon: ({ color, size }) => (
+            <MapPin color={color} size={size} strokeWidth={2.5} />
+          ),
         }}
       />
     </Tabs>
