@@ -1,12 +1,13 @@
 import { getTranslation } from "@/constants/translations";
 import { useApp } from "@/context/AppContext";
 import { useRouter } from "expo-router";
-import { Share2, UserPlus, Users } from "lucide-react-native";
+import { Crown, Share2, UserPlus, Users } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
   SafeAreaView,
+  ScrollView,
   Share,
   StyleSheet,
   Text,
@@ -23,6 +24,7 @@ export default function GroupSetupScreen() {
   const [generatedCode, setGeneratedCode] = useState<string>("");
   const [showNameInput, setShowNameInput] = useState<boolean>(!userName);
   const [isJoining, setIsJoining] = useState<boolean>(false);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
@@ -43,11 +45,20 @@ export default function GroupSetupScreen() {
       return;
     }
 
+    setIsCreating(true);
+
     try {
       const code = await createGroup();
       setGeneratedCode(code);
-    } catch (error) {
-      Alert.alert("Error", "Failed to create group. Please try again.");
+      setIsCreating(false);
+    } catch (error: any) {
+      setIsCreating(false);
+      console.error("Error creating group:", error);
+      Alert.alert(
+        "Error",
+        "Failed to create group. Please check your internet connection and try again.",
+        [{ text: "OK" }],
+      );
     }
   };
 
@@ -78,6 +89,7 @@ export default function GroupSetupScreen() {
     try {
       await joinGroup(groupCodeInput.trim());
       // Successfully joined - navigate to main app
+      setIsJoining(false);
       router.replace("./(tabs)");
     } catch (error: any) {
       setIsJoining(false);
@@ -102,7 +114,7 @@ export default function GroupSetupScreen() {
       } else {
         Alert.alert(
           "Error",
-          "Failed to join group. Please check your connection and try again.",
+          "Failed to join group. Please check your internet connection and try again.",
           [{ text: "OK" }],
         );
       }
@@ -127,7 +139,11 @@ export default function GroupSetupScreen() {
     return (
       <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
-          <View style={styles.content}>
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
             <View style={styles.header}>
               <View style={styles.iconContainer}>
                 <Users size={56} color="#FFFFFF" strokeWidth={2.5} />
@@ -157,7 +173,7 @@ export default function GroupSetupScreen() {
             >
               <Text style={styles.primaryButtonText}>{t("continue")}</Text>
             </TouchableOpacity>
-          </View>
+          </ScrollView>
         </SafeAreaView>
       </View>
     );
@@ -167,12 +183,22 @@ export default function GroupSetupScreen() {
     return (
       <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
-          <View style={styles.content}>
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
             <View style={styles.header}>
               <View style={styles.successIconContainer}>
-                <Users size={56} color="#0D7C66" strokeWidth={2.5} />
+                <Crown size={56} color="#FFD700" strokeWidth={2.5} />
               </View>
               <Text style={styles.title}>Group Created!</Text>
+              <View style={styles.leaderBadge}>
+                <Crown size={16} color="#FFD700" strokeWidth={2.5} />
+                <Text style={styles.leaderBadgeText}>
+                  You are the Group Leader
+                </Text>
+              </View>
               <Text style={styles.subtitle}>
                 Share this code with your group members
               </Text>
@@ -181,6 +207,22 @@ export default function GroupSetupScreen() {
             <View style={styles.codeContainer}>
               <Text style={styles.codeLabel}>{t("groupCode")}</Text>
               <Text style={styles.codeText}>{generatedCode}</Text>
+              <Text style={styles.codeNote}>
+                ✓ Group is live and ready to use
+              </Text>
+            </View>
+
+            <View style={styles.leaderPermissionsCard}>
+              <Text style={styles.permissionsTitle}>
+                As Group Leader, you can:
+              </Text>
+              <Text style={styles.permissionItem}>
+                📢 Send announcements to all members
+              </Text>
+              <Text style={styles.permissionItem}>📍 Set meeting points</Text>
+              <Text style={styles.permissionItem}>
+                📌 Pin important messages
+              </Text>
             </View>
 
             <TouchableOpacity
@@ -199,7 +241,11 @@ export default function GroupSetupScreen() {
             >
               <Text style={styles.secondaryButtonText}>{t("continue")}</Text>
             </TouchableOpacity>
-          </View>
+
+            <Text style={styles.helpText}>
+              Your location will be shared with group members in real-time
+            </Text>
+          </ScrollView>
         </SafeAreaView>
       </View>
     );
@@ -208,7 +254,11 @@ export default function GroupSetupScreen() {
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.content}>
+        <ScrollView
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={styles.header}>
             <View style={styles.iconContainer}>
               <Users size={56} color="#FFFFFF" strokeWidth={2.5} />
@@ -225,6 +275,9 @@ export default function GroupSetupScreen() {
                 <UserPlus size={32} color="#0D7C66" strokeWidth={2.5} />
                 <Text style={styles.optionTitle}>{t("joinGroup")}</Text>
               </View>
+              <Text style={styles.optionDescription}>
+                Enter the 6-digit code shared by your group leader
+              </Text>
               <TextInput
                 style={styles.input}
                 placeholder={t("enterGroupCode")}
@@ -238,11 +291,11 @@ export default function GroupSetupScreen() {
               <TouchableOpacity
                 style={[
                   styles.optionButton,
-                  isJoining && styles.optionButtonDisabled,
+                  (isJoining || isCreating) && styles.optionButtonDisabled,
                 ]}
                 onPress={handleJoinGroup}
                 activeOpacity={0.8}
-                disabled={isJoining}
+                disabled={isJoining || isCreating}
               >
                 {isJoining ? (
                   <ActivityIndicator color="#FFFFFF" />
@@ -260,22 +313,49 @@ export default function GroupSetupScreen() {
 
             <View style={styles.optionCard}>
               <View style={styles.optionHeader}>
-                <Users size={32} color="#0D7C66" strokeWidth={2.5} />
+                <Crown size={32} color="#FFD700" strokeWidth={2.5} />
                 <Text style={styles.optionTitle}>{t("createGroup")}</Text>
               </View>
               <Text style={styles.optionDescription}>
-                Create a new group and get a code to share with others
+                Create a new group and become the group leader
               </Text>
+              <View style={styles.leaderFeatures}>
+                <Text style={styles.leaderFeatureText}>
+                  ✓ Send announcements
+                </Text>
+                <Text style={styles.leaderFeatureText}>✓ Pin messages</Text>
+                <Text style={styles.leaderFeatureText}>
+                  ✓ Set meeting points
+                </Text>
+              </View>
               <TouchableOpacity
-                style={styles.optionButton}
+                style={[
+                  styles.optionButton,
+                  styles.createGroupButton,
+                  (isCreating || isJoining) && styles.optionButtonDisabled,
+                ]}
                 onPress={handleCreateGroup}
                 activeOpacity={0.8}
+                disabled={isCreating || isJoining}
               >
-                <Text style={styles.optionButtonText}>{t("createGroup")}</Text>
+                {isCreating ? (
+                  <ActivityIndicator color="#FFFFFF" />
+                ) : (
+                  <>
+                    <Crown size={20} color="#FFFFFF" strokeWidth={2.5} />
+                    <Text style={styles.optionButtonText}>
+                      {t("createGroup")}
+                    </Text>
+                  </>
+                )}
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+
+          <Text style={styles.footerNote}>
+            💡 Both devices need internet connection for real-time tracking
+          </Text>
+        </ScrollView>
       </SafeAreaView>
     </View>
   );
@@ -290,7 +370,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    flex: 1,
+    flexGrow: 1,
     paddingHorizontal: 24,
     paddingVertical: 32,
     justifyContent: "center",
@@ -317,10 +397,12 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: "#E6F7F4",
+    backgroundColor: "#FFF9E6",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 24,
+    borderWidth: 3,
+    borderColor: "#FFD700",
   },
   title: {
     fontSize: 28,
@@ -334,6 +416,24 @@ const styles = StyleSheet.create({
     fontWeight: "500" as const,
     color: "#666666",
     textAlign: "center",
+  },
+  leaderBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFF9E6",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginTop: 12,
+    marginBottom: 8,
+    gap: 6,
+    borderWidth: 2,
+    borderColor: "#FFD700",
+  },
+  leaderBadgeText: {
+    fontSize: 14,
+    fontWeight: "700" as const,
+    color: "#B8860B",
   },
   inputContainer: {
     marginBottom: 24,
@@ -399,6 +499,18 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     lineHeight: 20,
   },
+  leaderFeatures: {
+    backgroundColor: "#FFF9E6",
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 16,
+    gap: 6,
+  },
+  leaderFeatureText: {
+    fontSize: 14,
+    fontWeight: "500" as const,
+    color: "#B8860B",
+  },
   optionButton: {
     backgroundColor: "#0D7C66",
     borderRadius: 12,
@@ -407,6 +519,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
     minHeight: 56,
     justifyContent: "center",
+    flexDirection: "row",
+    gap: 8,
+  },
+  createGroupButton: {
+    backgroundColor: "#FFD700",
   },
   optionButtonDisabled: {
     backgroundColor: "#9EBFB8",
@@ -454,6 +571,32 @@ const styles = StyleSheet.create({
     fontWeight: "800" as const,
     color: "#0D7C66",
     letterSpacing: 8,
+    marginBottom: 12,
+  },
+  codeNote: {
+    fontSize: 14,
+    fontWeight: "500" as const,
+    color: "#0D7C66",
+  },
+  leaderPermissionsCard: {
+    backgroundColor: "#FFF9E6",
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 24,
+    borderWidth: 2,
+    borderColor: "#FFD700",
+  },
+  permissionsTitle: {
+    fontSize: 16,
+    fontWeight: "700" as const,
+    color: "#B8860B",
+    marginBottom: 12,
+  },
+  permissionItem: {
+    fontSize: 14,
+    fontWeight: "500" as const,
+    color: "#B8860B",
+    marginBottom: 6,
   },
   shareButton: {
     backgroundColor: "#0D7C66",
@@ -482,10 +625,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 2,
     borderColor: "#0D7C66",
+    marginBottom: 16,
   },
   secondaryButtonText: {
     fontSize: 20,
     fontWeight: "700" as const,
     color: "#0D7C66",
+  },
+  helpText: {
+    fontSize: 14,
+    fontWeight: "400" as const,
+    color: "#999999",
+    textAlign: "center",
+  },
+  footerNote: {
+    fontSize: 14,
+    fontWeight: "500" as const,
+    color: "#666666",
+    textAlign: "center",
+    marginTop: 24,
+    paddingHorizontal: 16,
   },
 });

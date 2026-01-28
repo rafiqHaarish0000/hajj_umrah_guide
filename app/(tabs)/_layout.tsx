@@ -43,7 +43,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="map"
         options={{
-          title: t("liveMap"),
+          title: "Live Map",
           tabBarIcon: ({ color, size }) => (
             <Map color={color} size={size} strokeWidth={2.5} />
           ),
@@ -52,7 +52,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="prayer"
         options={{
-          title: t("prayerQibla"),
+          title: "Qibla",
           tabBarIcon: ({ color, size }) => (
             <Clock color={color} size={size} strokeWidth={2.5} />
           ),

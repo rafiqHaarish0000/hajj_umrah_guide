@@ -3,7 +3,10 @@ import { useApp } from "@/context/AppContext";
 import { useRouter } from "expo-router";
 import {
   AlertCircle,
+  Bell,
+  BookMarked,
   BookOpen,
+  Calendar,
   Clock,
   Map,
   MapPin,
@@ -50,11 +53,11 @@ export default function HomeScreen() {
       route: "/map",
     },
     {
-      id: "meeting",
-      title: t("meetingPoint"),
-      icon: MapPin,
+      id: "announcements",
+      title: t("announcements"),
+      icon: Bell,
       color: "#4ECDC4",
-      route: "/map",
+      route: "/announcements",
     },
     {
       id: "facilities",
@@ -78,10 +81,24 @@ export default function HomeScreen() {
       route: "/duas",
     },
     {
+      id: "dailyplan",
+      title: t("checklist"),
+      icon: Calendar,
+      color: "#96a088",
+      route: "/daily-plan",
+    },
+    {
+      id: "ritualguide",
+      title: t("mistakePrevension"),
+      icon: BookMarked,
+      color: "#95e28b",
+      route: "/ritual-guide",
+    },
+    {
       id: "emergency",
       title: t("emergency"),
       icon: Phone,
-      color: "#F7DC6F",
+      color: "#b87373",
       route: "/panic",
     },
   ];
@@ -145,8 +162,7 @@ export default function HomeScreen() {
           <View style={styles.tipCard}>
             <AlertCircle size={24} color="#0D7C66" strokeWidth={2.5} />
             <Text style={styles.tipText}>
-              Stay hydrated and keep your phone charged. Use the panic button in
-              emergencies.
+              Stay hydrated and keep your phone charged.
             </Text>
           </View>
         </ScrollView>
@@ -245,7 +261,7 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   sectionTitle: {
-    marginTop: 16,
+    marginTop: 50,
     fontSize: 22,
     fontWeight: "700" as const,
     color: "#1A1A1A",

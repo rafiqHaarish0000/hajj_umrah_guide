@@ -144,14 +144,14 @@ export default function ProfileScreen() {
             )}
           </View>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.logoutButton}
             onPress={handleLogout}
             activeOpacity={0.8}
           >
             <LogOut size={24} color="#DC3545" strokeWidth={2.5} />
             <Text style={styles.logoutButtonText}>{t("logout")}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </ScrollView>
       </SafeAreaView>
     </View>

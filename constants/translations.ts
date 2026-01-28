@@ -21,12 +21,14 @@ export const translations = {
     groupCode: "Group Code",
     shareCode: "Share Code",
     home: "Home",
-    liveMap: "Live Map",
-    meetingPoint: "Meeting Point",
+    liveMap: "Meeting Point",
+    meetingPoint: "Announcement",
     nearbyPlaces: "Nearby Places",
-    prayerQibla: "Qibla",
+    prayerQibla: "Qibla & Prayer Time",
     duas: "Duas",
     emergency: "Emergency",
+    checklist: "Daily Plan",
+    mistakePrevension: "Ritual Guide",
     panicButton: "EMERGENCY",
     profile: "Profile",
     settings: "Settings",
@@ -79,6 +81,32 @@ export const translations = {
     centerOnGroup: "Center on Group",
     updateEvery2Min: "Location updates every 2 minutes",
     meters: "meters away",
+
+    // NEW TRANSLATIONS FOR ANNOUNCEMENTS SCREEN
+    announcements: "Announcement",
+    groupMessages: "Important Group Messages",
+    pinned: "Pinned",
+    newAnnouncement: "New Announcement",
+
+    // NEW TRANSLATIONS FOR DAILY PLAN SCREEN
+    todaysPlan: "Today's Plan",
+    yourProgress: "Your Progress",
+    of: "of",
+    completed: "completed",
+    todaysRituals: "Today's Rituals",
+    listen: "Listen",
+    dailyPlanReminder:
+      "Complete each ritual with patience and devotion. May Allah accept your worship.",
+
+    // NEW TRANSLATIONS FOR RITUAL GUIDE SCREEN
+    ritualGuide: "Ritual Guide",
+    guidanceWithLove: "Guidance with Care & Respect",
+    ritualGuideIntro:
+      "These gentle reminders help you perform rituals correctly with confidence and peace of mind.",
+    thingsToRemember: "Things to Remember",
+    thingsToAvoid: "Things to Avoid",
+    ritualEncouragement:
+      "Allah is Most Merciful. Perform your rituals with sincerity, and He will accept them. Stay calm and focused.",
   },
   ar: {
     selectLanguage: "اختر لغتك",
@@ -157,6 +185,31 @@ export const translations = {
     centerOnGroup: "التركيز على المجموعة",
     updateEvery2Min: "تحديثات الموقع كل دقيقتين",
     meters: "متر",
+
+    // NEW TRANSLATIONS FOR ANNOUNCEMENTS SCREEN
+    announcements: "الإعلانات",
+    groupMessages: "رسائل المجموعة المهمة",
+    pinned: "مثبت",
+    newAnnouncement: "إعلان جديد",
+
+    // NEW TRANSLATIONS FOR DAILY PLAN SCREEN
+    todaysPlan: "خطة اليوم",
+    yourProgress: "تقدمك",
+    of: "من",
+    completed: "مكتمل",
+    todaysRituals: "مناسك اليوم",
+    listen: "استمع",
+    dailyPlanReminder: "أكمل كل مناسك بصبر وإخلاص. تقبل الله عبادتك.",
+
+    // NEW TRANSLATIONS FOR RITUAL GUIDE SCREEN
+    ritualGuide: "دليل المناسك",
+    guidanceWithLove: "إرشاد بعناية واحترام",
+    ritualGuideIntro:
+      "هذه التذكيرات اللطيفة تساعدك على أداء المناسك بشكل صحيح بثقة وطمأنينة.",
+    thingsToRemember: "أشياء يجب تذكرها",
+    thingsToAvoid: "أشياء يجب تجنبها",
+    ritualEncouragement:
+      "الله أرحم الراحمين. أدِّ مناسكك بإخلاص وسيتقبلها. ابقَ هادئاً ومركزاً.",
   },
   ta: {
     selectLanguage: "உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்",
@@ -236,6 +289,32 @@ export const translations = {
     centerOnGroup: "குழுவில் மையப்படுத்து",
     updateEvery2Min: "இட புதுப்பிப்புகள் ஒவ்வொரு 2 நிமிடங்களுக்கும்",
     meters: "மீட்டர் தொலைவில்",
+
+    // NEW TRANSLATIONS FOR ANNOUNCEMENTS SCREEN
+    announcements: "அறிவிப்புகள்",
+    groupMessages: "முக்கிய குழு செய்திகள்",
+    pinned: "பொருத்தப்பட்டது",
+    newAnnouncement: "புதிய அறிவிப்பு",
+
+    // NEW TRANSLATIONS FOR DAILY PLAN SCREEN
+    todaysPlan: "இன்றைய திட்டம்",
+    yourProgress: "உங்கள் முன்னேற்றம்",
+    of: "இல்",
+    completed: "முடிந்தது",
+    todaysRituals: "இன்றைய சடங்குகள்",
+    listen: "கேளுங்கள்",
+    dailyPlanReminder:
+      "ஒவ்வொரு சடங்கையும் பொறுமையுடனும் பக்தியுடனும் முடிக்கவும். அல்லாஹ் உங்கள் வழிபாட்டை ஏற்றுக்கொள்வானாக.",
+
+    // NEW TRANSLATIONS FOR RITUAL GUIDE SCREEN
+    ritualGuide: "சடங்கு வழிகாட்டி",
+    guidanceWithLove: "அக்கறையுடனும் மரியாதையுடனும் வழிகாட்டுதல்",
+    ritualGuideIntro:
+      "இந்த மென்மையான நினைவூட்டல்கள் நம்பிக்கையுடனும் மன அமைதியுடனும் சடங்குகளை சரியாக செய்ய உதவுகின்றன.",
+    thingsToRemember: "நினைவில் கொள்ள வேண்டியவை",
+    thingsToAvoid: "தவிர்க்க வேண்டியவை",
+    ritualEncouragement:
+      "அல்லாஹ் மிகவும் கருணையுள்ளவன். உங்கள் சடங்குகளை உண்மையுடன் செய்யுங்கள், அவன் அவற்றை ஏற்றுக்கொள்வான். அமைதியாகவும் கவனமாகவும் இருங்கள்.",
   },
   ur: {
     selectLanguage: "اپنی زبان منتخب کریں",
@@ -314,6 +393,32 @@ export const translations = {
     centerOnGroup: "گروپ پر مرکوز کریں",
     updateEvery2Min: "مقام کی تازہ کاریاں ہر 2 منٹ میں",
     meters: "میٹر دور",
+
+    // NEW TRANSLATIONS FOR ANNOUNCEMENTS SCREEN
+    announcements: "اعلانات",
+    groupMessages: "اہم گروپ پیغامات",
+    pinned: "پن شدہ",
+    newAnnouncement: "نیا اعلان",
+
+    // NEW TRANSLATIONS FOR DAILY PLAN SCREEN
+    todaysPlan: "آج کا منصوبہ",
+    yourProgress: "آپ کی پیشرفت",
+    of: "میں سے",
+    completed: "مکمل",
+    todaysRituals: "آج کے مناسک",
+    listen: "سنیں",
+    dailyPlanReminder:
+      "ہر مناسک کو صبر اور عقیدت سے مکمل کریں۔ اللہ آپ کی عبادت قبول فرمائے۔",
+
+    // NEW TRANSLATIONS FOR RITUAL GUIDE SCREEN
+    ritualGuide: "مناسک کی رہنمائی",
+    guidanceWithLove: "دیکھ بھال اور احترام کے ساتھ رہنمائی",
+    ritualGuideIntro:
+      "یہ نرم یاد دہانیاں آپ کو اعتماد اور ذہنی سکون کے ساتھ مناسک صحیح طریقے سے ادا کرنے میں مدد کرتی ہیں۔",
+    thingsToRemember: "یاد رکھنے کی باتیں",
+    thingsToAvoid: "بچنے کی باتیں",
+    ritualEncouragement:
+      "اللہ سب سے زیادہ رحم کرنے والا ہے۔ اپنے مناسک خلوص سے ادا کریں، اور وہ انہیں قبول فرمائے گا۔ پرسکون اور مرکوز رہیں۔",
   },
 };
 
