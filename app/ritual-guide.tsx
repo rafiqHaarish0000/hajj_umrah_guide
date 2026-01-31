@@ -92,7 +92,7 @@ export default function RitualGuideScreen() {
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
-  ) => getTranslation(language, key);
+  ) => getTranslation(language ?? "en", key);
 
   const handleToggle = (id: string) => {
     setExpandedId(expandedId === id ? null : id);

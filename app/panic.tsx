@@ -4,13 +4,13 @@ import { useRouter } from "expo-router";
 import { AlertCircle, Phone, X } from "lucide-react-native";
 import React from "react";
 import {
-    Alert,
-    Linking,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  Linking,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function PanicScreen() {
@@ -19,7 +19,7 @@ export default function PanicScreen() {
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
-  ) => getTranslation(language, key);
+  ) => getTranslation(language ?? "en", key);
 
   const handleConfirmPanic = () => {
     Alert.alert(

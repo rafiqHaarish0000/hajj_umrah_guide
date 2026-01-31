@@ -85,7 +85,8 @@ export default function DuasScreen() {
                         <View style={styles.duaSection}>
                           <Text style={styles.duaLabel}>Translation</Text>
                           <Text style={styles.duaTranslation}>
-                            {dua.translation[language]}
+                            {dua.translation[language as "en" | "ta" | "ur"] ??
+                              dua.translation.en}
                           </Text>
                         </View>
                       </View>
