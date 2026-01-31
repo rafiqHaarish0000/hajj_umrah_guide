@@ -2,8 +2,8 @@ import { database } from "@/config/firebase";
 import { Language } from "@/constants/translations";
 import createContextHook from "@nkzw/create-context-hook";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 import * as Location from "expo-location";
-import * as Notifications from "expo-notifications";
 import {
   get,
   off,
@@ -15,6 +15,12 @@ import {
   update,
 } from "firebase/database";
 import { useEffect, useState } from "react";
+
+// Check if running in Expo Go
+const isExpoGo = Constants.appOwnership === "expo";
+
+// Lazy load notifications to prevent Android crash
+let Notifications: any = null;
 
 export interface GroupMember {
   id: string;
@@ -39,7 +45,7 @@ export interface Announcement {
 }
 
 export interface AppState {
-  language: Language;
+  language: Language | null;
   userName: string | null;
   groupCode: string | null;
   isGroupLeader: boolean;
@@ -63,8 +69,42 @@ const COLORS = [
   "#85C1E2",
 ];
 
+// Initialize notifications safely - only if not in Expo Go
+const initNotifications = async () => {
+  if (isExpoGo) {
+    console.log("Running in Expo Go - notifications disabled");
+    return {
+      getPermissionsAsync: async () => ({ status: "denied", granted: false }),
+      requestPermissionsAsync: async () => ({
+        status: "denied",
+        granted: false,
+      }),
+      scheduleNotificationAsync: async () => null,
+    };
+  }
+
+  if (!Notifications) {
+    try {
+      Notifications = await import("expo-notifications");
+      console.log("Notifications module loaded successfully");
+    } catch (error) {
+      console.warn("Notifications not available:", error);
+      // Create mock notification object for graceful fallback
+      Notifications = {
+        getPermissionsAsync: async () => ({ status: "denied", granted: false }),
+        requestPermissionsAsync: async () => ({
+          status: "denied",
+          granted: false,
+        }),
+        scheduleNotificationAsync: async () => null,
+      };
+    }
+  }
+  return Notifications;
+};
+
 export const [AppProvider, useApp] = createContextHook(() => {
-  const [language, setLanguage] = useState<Language>("en");
+  const [language, setLanguage] = useState<Language | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [groupCode, setGroupCode] = useState<string | null>(null);
   const [isGroupLeader, setIsGroupLeader] = useState<boolean>(false);
@@ -122,7 +162,10 @@ export const [AppProvider, useApp] = createContextHook(() => {
       const locationPermission = await Location.getForegroundPermissionsAsync();
       setHasLocationPermission(locationPermission.granted);
 
-      const notificationPermission = await Notifications.getPermissionsAsync();
+      // Initialize and check notification permissions
+      const NotificationsModule = await initNotifications();
+      const notificationPermission =
+        await NotificationsModule.getPermissionsAsync();
       setHasNotificationPermission(notificationPermission.granted);
     } catch (error) {
       console.error("Error loading stored data:", error);
@@ -261,7 +304,7 @@ export const [AppProvider, useApp] = createContextHook(() => {
 
     // Listen to announcements
     const announcementsRef = ref(database, `groups/${code}/announcements`);
-    onValue(announcementsRef, (snapshot) => {
+    onValue(announcementsRef, async (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const announcementsList: Announcement[] = Object.entries(data).map(
@@ -293,19 +336,29 @@ export const [AppProvider, useApp] = createContextHook(() => {
         setAnnouncements(announcementsList);
 
         // Show notification for new announcements (not from current user)
-        const latestAnnouncement = announcementsList[0];
-        if (latestAnnouncement && latestAnnouncement.leaderName !== userName) {
-          const timeSincePost = Date.now() - latestAnnouncement.timestamp;
-          // Only notify if announcement is less than 10 seconds old (recent)
-          if (timeSincePost < 10000) {
-            Notifications.scheduleNotificationAsync({
-              content: {
-                title: `📢 ${latestAnnouncement.leaderName}`,
-                body: latestAnnouncement.message,
-                data: { type: "announcement" },
-              },
-              trigger: null,
-            });
+        if (!isExpoGo) {
+          const latestAnnouncement = announcementsList[0];
+          if (
+            latestAnnouncement &&
+            latestAnnouncement.leaderName !== userName
+          ) {
+            const timeSincePost = Date.now() - latestAnnouncement.timestamp;
+            // Only notify if announcement is less than 10 seconds old (recent)
+            if (timeSincePost < 10000) {
+              const NotificationsModule = await initNotifications();
+              try {
+                await NotificationsModule.scheduleNotificationAsync({
+                  content: {
+                    title: `📢 ${latestAnnouncement.leaderName}`,
+                    body: latestAnnouncement.message,
+                    data: { type: "announcement" },
+                  },
+                  trigger: null,
+                });
+              } catch (error) {
+                console.log("Could not send notification:", error);
+              }
+            }
           }
         }
       } else {
@@ -315,23 +368,28 @@ export const [AppProvider, useApp] = createContextHook(() => {
 
     // Listen to alerts/panic notifications
     const alertsRef = ref(database, `groups/${code}/alerts`);
-    onValue(alertsRef, (snapshot) => {
+    onValue(alertsRef, async (snapshot) => {
       const data = snapshot.val();
-      if (data) {
+      if (data && !isExpoGo) {
         // Get the latest alert
         const alerts = Object.values(data) as any[];
         const latestAlert = alerts[alerts.length - 1];
 
         if (latestAlert && latestAlert.from !== userName) {
           // Show notification for alerts from other users
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: latestAlert.title || "Group Alert",
-              body: latestAlert.message,
-              data: { type: latestAlert.type },
-            },
-            trigger: null, // Show immediately
-          });
+          const NotificationsModule = await initNotifications();
+          try {
+            await NotificationsModule.scheduleNotificationAsync({
+              content: {
+                title: latestAlert.title || "Group Alert",
+                body: latestAlert.message,
+                data: { type: latestAlert.type },
+              },
+              trigger: null, // Show immediately
+            });
+          } catch (error) {
+            console.log("Could not send notification:", error);
+          }
         }
       }
     });
@@ -388,7 +446,8 @@ export const [AppProvider, useApp] = createContextHook(() => {
 
   const requestNotificationPermission = async (): Promise<boolean> => {
     try {
-      const { status } = await Notifications.requestPermissionsAsync();
+      const NotificationsModule = await initNotifications();
+      const { status } = await NotificationsModule.requestPermissionsAsync();
       const granted = status === "granted";
       setHasNotificationPermission(granted);
       return granted;
@@ -545,13 +604,9 @@ export const [AppProvider, useApp] = createContextHook(() => {
         await leaveGroup();
       }
 
-      // Clear local storage
-      await AsyncStorage.multiRemove([
-        "userName",
-        "groupCode",
-        "isGroupLeader",
-      ]);
+      await AsyncStorage.clear(); // 🔧 Changed from multiRemove to clear()
 
+      setLanguage(null); // 🔧 Added this
       setUserName(null);
       setGroupCode(null);
       setIsGroupLeader(false);
@@ -559,6 +614,8 @@ export const [AppProvider, useApp] = createContextHook(() => {
       setGroupMembers([]);
       setMeetingPoint(null);
       setAnnouncements([]);
+      setHasLocationPermission(false); // 🔧 Added this
+      setHasNotificationPermission(false); // 🔧 Added this
 
       console.log("Logged out successfully");
     } catch (error) {

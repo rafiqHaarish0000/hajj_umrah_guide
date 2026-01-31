@@ -3,11 +3,11 @@ import { useApp } from "@/context/AppContext";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function LanguageSelectScreen() {
@@ -34,7 +34,7 @@ export default function LanguageSelectScreen() {
             <View style={styles.logoContainer}>
               <Text style={styles.logoText}>🕋</Text>
             </View>
-            <Text style={styles.title}>Hajj & Umrah Guide</Text>
+            <Text style={styles.title}>Nusuk Path</Text>
             <Text style={styles.subtitle}>Select Your Language</Text>
           </View>
 

@@ -3,12 +3,12 @@ import { useApp } from "@/context/AppContext";
 import { Calendar, CheckCircle2, Circle, Volume2 } from "lucide-react-native";
 import React, { useState } from "react";
 import {
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 // Sample daily plan data - in production, this would be dynamic based on Hajj day
@@ -67,7 +67,7 @@ export default function DailyPlanScreen() {
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
-  ) => getTranslation(language, key);
+  ) => getTranslation(language ?? "en", key);
 
   const toggleRitual = (id: string) => {
     setRituals(

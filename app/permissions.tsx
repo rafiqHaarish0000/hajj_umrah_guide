@@ -21,7 +21,7 @@ export default function PermissionsScreen() {
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
-  ) => getTranslation(language, key);
+  ) => getTranslation(language ?? "en", key);
 
   const handleContinue = async () => {
     setIsRequesting(true);

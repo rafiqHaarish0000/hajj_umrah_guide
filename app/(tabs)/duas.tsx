@@ -4,12 +4,12 @@ import { useApp } from "@/context/AppContext";
 import { BookOpen, ChevronDown, ChevronUp } from "lucide-react-native";
 import React, { useState } from "react";
 import {
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function DuasScreen() {
@@ -18,7 +18,7 @@ export default function DuasScreen() {
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
-  ) => getTranslation(language, key);
+  ) => getTranslation(language ?? "en", key);
 
   const categories = [
     { key: "ihram" as const, title: t("ihramDuas") },
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   categoryTitle: {
-    marginTop:28,
+    marginTop: 28,
     fontSize: 22,
     fontWeight: "700" as const,
     color: "#1A1A1A",

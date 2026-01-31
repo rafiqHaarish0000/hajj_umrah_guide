@@ -9,7 +9,7 @@ export default function TabLayout() {
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
-  ) => getTranslation(language, key);
+  ) => getTranslation(language ?? "en", key);
 
   return (
     <Tabs

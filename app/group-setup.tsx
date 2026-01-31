@@ -28,7 +28,7 @@ export default function GroupSetupScreen() {
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
-  ) => getTranslation(language, key);
+  ) => getTranslation(language ?? "en", key);
 
   const handleSaveName = async () => {
     if (!name.trim()) {
@@ -273,7 +273,7 @@ export default function GroupSetupScreen() {
             <View style={styles.optionCard}>
               <View style={styles.optionHeader}>
                 <UserPlus size={32} color="#0D7C66" strokeWidth={2.5} />
-                <Text style={styles.optionTitle}>{t("joinGroup")}</Text>
+                <Text style={styles.optionTitle}>{"Group Member"}</Text>
               </View>
               <Text style={styles.optionDescription}>
                 Enter the 6-digit code shared by your group leader
@@ -313,8 +313,8 @@ export default function GroupSetupScreen() {
 
             <View style={styles.optionCard}>
               <View style={styles.optionHeader}>
-                <Crown size={32} color="#FFD700" strokeWidth={2.5} />
-                <Text style={styles.optionTitle}>{t("createGroup")}</Text>
+                <Crown size={32} color="#4F46E5" strokeWidth={2.5} />
+                <Text style={styles.optionTitle}>{"Group Leader"}</Text>
               </View>
               <Text style={styles.optionDescription}>
                 Create a new group and become the group leader
@@ -475,12 +475,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     padding: 24,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
+
+    borderWidth: 1,
+    borderColor: "rgba(79, 70, 229, 0.4)",
+
+    shadowColor: "#4F46E5",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.18,
+    shadowRadius: 10,
+    elevation: 4,
   },
+
   optionHeader: {
     flexDirection: "row",
     alignItems: "center",
@@ -523,7 +528,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   createGroupButton: {
-    backgroundColor: "#FFD700",
+    backgroundColor: "#4F46E5",
   },
   optionButtonDisabled: {
     backgroundColor: "#9EBFB8",

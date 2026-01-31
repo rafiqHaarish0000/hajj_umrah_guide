@@ -4,13 +4,13 @@ import { useRouter } from "expo-router";
 import { Globe, LogOut, Users, X } from "lucide-react-native";
 import React from "react";
 import {
-    Alert,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function ProfileScreen() {
@@ -20,7 +20,7 @@ export default function ProfileScreen() {
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
-  ) => getTranslation(language, key);
+  ) => getTranslation(language ?? "en", key);
 
   const handleLanguageChange = () => {
     const languages: { code: Language; name: string }[] = [
@@ -62,7 +62,7 @@ export default function ProfileScreen() {
         style: "destructive",
         onPress: async () => {
           await logout();
-          router.replace("./language-select");
+          router.replace("/");
         },
       },
     ]);
@@ -122,7 +122,7 @@ export default function ProfileScreen() {
               <View style={styles.settingInfo}>
                 <Text style={styles.settingTitle}>{t("changeLanguage")}</Text>
                 <Text style={styles.settingSubtitle}>
-                  Current: {language.toUpperCase()}
+                  Current: {(language ?? "en").toUpperCase()}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -144,14 +144,14 @@ export default function ProfileScreen() {
             )}
           </View>
 
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={styles.logoutButton}
             onPress={handleLogout}
             activeOpacity={0.8}
           >
             <LogOut size={24} color="#DC3545" strokeWidth={2.5} />
             <Text style={styles.logoutButtonText}>{t("logout")}</Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
     </View>

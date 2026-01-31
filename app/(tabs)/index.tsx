@@ -29,7 +29,7 @@ export default function HomeScreen() {
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
-  ) => getTranslation(language, key);
+  ) => getTranslation(language ?? "en", key);
 
   const handleProfilePress = () => {
     router.push("./profile");

@@ -1,18 +1,19 @@
 import { facilitiesData, Facility } from "@/constants/facilities";
 import { getTranslation } from "@/constants/translations";
 import { useApp } from "@/context/AppContext";
+
 import {
   Accessibility,
+  Bus,
   DoorOpen,
   Droplets,
+  Hospital,
   MapPin,
   Users,
+  Utensils,
 } from "lucide-react-native";
 import React, { useRef, useState } from "react";
 import {
-  Alert,
-  Linking,
-  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -20,15 +21,19 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import MapDirectionsScreen from "../MapDirectionsScreen";
 
 export default function FacilitiesScreen() {
   const { language, currentLocation } = useApp();
   const [selectedType, setSelectedType] = useState<string>("all");
+  const [selectedFacility, setSelectedFacility] = useState<Facility | null>(
+    null,
+  );
   const scrollViewRef = useRef<ScrollView>(null);
 
   const t = (
     key: keyof typeof import("@/constants/translations").translations.en,
-  ) => getTranslation(language, key);
+  ) => getTranslation(language ?? "en", key);
 
   const calculateDistance = (facility: Facility): number => {
     if (!currentLocation) return 0;
@@ -52,37 +57,12 @@ export default function FacilitiesScreen() {
     return Math.round(R * c);
   };
 
-  const openInGoogleMaps = (facility: Facility) => {
-    const { latitude, longitude, name } = facility;
-    const label = encodeURIComponent(name);
+  const handleFacilityPress = (facility: Facility) => {
+    setSelectedFacility(facility);
+  };
 
-    // Different URL schemes for iOS and Android
-    const scheme = Platform.select({
-      ios: `maps:0,0?q=${label}@${latitude},${longitude}`,
-      android: `geo:0,0?q=${latitude},${longitude}(${label})`,
-    });
-
-    // Fallback to Google Maps web if native app is not available
-    const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-
-    Alert.alert("Open in Maps", `Navigate to ${name}?`, [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Open",
-        onPress: async () => {
-          try {
-            const supported = await Linking.canOpenURL(scheme || url);
-            if (supported && scheme) {
-              await Linking.openURL(scheme);
-            } else {
-              await Linking.openURL(url);
-            }
-          } catch (error) {
-            Alert.alert("Error", "Unable to open maps");
-          }
-        },
-      },
-    ]);
+  const handleBackFromMap = () => {
+    setSelectedFacility(null);
   };
 
   const getIconForType = (type: string) => {
@@ -97,6 +77,12 @@ export default function FacilitiesScreen() {
         return Droplets;
       case "women":
         return Users;
+      case "restaurant":
+        return Utensils;
+      case "hospital":
+        return Hospital;
+      case "bus":
+        return Bus;
       default:
         return MapPin;
     }
@@ -114,6 +100,12 @@ export default function FacilitiesScreen() {
         return "#FFA07A";
       case "women":
         return "#98D8C8";
+      case "restaurant":
+        return "#FF8C42";
+      case "hospital":
+        return "#E74C3C";
+      case "bus":
+        return "#3498DB";
       default:
         return "#0D7C66";
     }
@@ -126,6 +118,9 @@ export default function FacilitiesScreen() {
     { key: "wheelchair", label: t("wheelchairPaths"), icon: Accessibility },
     { key: "zamzam", label: t("zamzamPoints"), icon: Droplets },
     { key: "women", label: t("womenZones"), icon: Users },
+    { key: "restaurant", label: t("restaurants"), icon: Utensils },
+    { key: "hospital", label: t("hospitals"), icon: Hospital },
+    { key: "bus", label: t("busStops"), icon: Bus },
   ];
 
   const filteredFacilities =
@@ -135,12 +130,25 @@ export default function FacilitiesScreen() {
 
   const handleFilterChange = (filterKey: string, index: number) => {
     setSelectedType(filterKey);
-    // Scroll to the selected filter chip
     scrollViewRef.current?.scrollTo({
-      x: index * 120, // Approximate chip width
+      x: index * 120,
       animated: true,
     });
   };
+
+  // If a facility is selected, show the MapDirectionsScreen
+  if (selectedFacility) {
+    return (
+      <MapDirectionsScreen
+        destination={{
+          latitude: selectedFacility.latitude,
+          longitude: selectedFacility.longitude,
+          name: selectedFacility.name,
+        }}
+        onBack={handleBackFromMap}
+      />
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -202,7 +210,7 @@ export default function FacilitiesScreen() {
                 key={facility.id}
                 style={styles.facilityCard}
                 activeOpacity={0.7}
-                onPress={() => openInGoogleMaps(facility)}
+                onPress={() => handleFacilityPress(facility)}
               >
                 <View style={[styles.facilityIcon, { backgroundColor: color }]}>
                   <Icon size={28} color="#FFFFFF" strokeWidth={2.5} />
@@ -332,5 +340,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500" as const,
     color: "#666666",
+  },
+  backButton: {
+    position: "absolute",
+    top: 16,
+    right: 24,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

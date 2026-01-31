@@ -54,6 +54,9 @@ export const translations = {
     wheelchairPaths: "Wheelchair Paths",
     zamzamPoints: "Zamzam Water",
     womenZones: "Women Prayer Zones",
+    restaurants: "Restaurants",
+    hospitals: "Hospitals",
+    busStops: "Bus Stops",
     ihramDuas: "Ihram Duas",
     tawafDuas: "Tawaf Duas",
     saiDuas: "Sa'i Duas",
@@ -81,14 +84,10 @@ export const translations = {
     centerOnGroup: "Center on Group",
     updateEvery2Min: "Location updates every 2 minutes",
     meters: "meters away",
-
-    // NEW TRANSLATIONS FOR ANNOUNCEMENTS SCREEN
     announcements: "Announcement",
     groupMessages: "Important Group Messages",
     pinned: "Pinned",
     newAnnouncement: "New Announcement",
-
-    // NEW TRANSLATIONS FOR DAILY PLAN SCREEN
     todaysPlan: "Today's Plan",
     yourProgress: "Your Progress",
     of: "of",
@@ -97,8 +96,6 @@ export const translations = {
     listen: "Listen",
     dailyPlanReminder:
       "Complete each ritual with patience and devotion. May Allah accept your worship.",
-
-    // NEW TRANSLATIONS FOR RITUAL GUIDE SCREEN
     ritualGuide: "Ritual Guide",
     guidanceWithLove: "Guidance with Care & Respect",
     ritualGuideIntro:
@@ -158,6 +155,9 @@ export const translations = {
     wheelchairPaths: "مسارات الكراسي المتحركة",
     zamzamPoints: "نقاط ماء زمزم",
     womenZones: "مناطق صلاة النساء",
+    restaurants: "المطاعم",
+    hospitals: "المستشفيات",
+    busStops: "محطات الحافلات",
     ihramDuas: "أدعية الإحرام",
     tawafDuas: "أدعية الطواف",
     saiDuas: "أدعية السعي",
@@ -186,13 +186,11 @@ export const translations = {
     updateEvery2Min: "تحديثات الموقع كل دقيقتين",
     meters: "متر",
 
-    // NEW TRANSLATIONS FOR ANNOUNCEMENTS SCREEN
     announcements: "الإعلانات",
     groupMessages: "رسائل المجموعة المهمة",
     pinned: "مثبت",
     newAnnouncement: "إعلان جديد",
 
-    // NEW TRANSLATIONS FOR DAILY PLAN SCREEN
     todaysPlan: "خطة اليوم",
     yourProgress: "تقدمك",
     of: "من",
@@ -201,7 +199,6 @@ export const translations = {
     listen: "استمع",
     dailyPlanReminder: "أكمل كل مناسك بصبر وإخلاص. تقبل الله عبادتك.",
 
-    // NEW TRANSLATIONS FOR RITUAL GUIDE SCREEN
     ritualGuide: "دليل المناسك",
     guidanceWithLove: "إرشاد بعناية واحترام",
     ritualGuideIntro:
@@ -262,6 +259,9 @@ export const translations = {
     wheelchairPaths: "சக்கர நாற்காலி பாதைகள்",
     zamzamPoints: "ஸம்ஸம் நீர்",
     womenZones: "பெண்கள் தொழுகை பகுதிகள்",
+    restaurants: "உணவகங்கள்",
+    hospitals: "மருத்துவமனைகள்",
+    busStops: "பஸ் நிறுத்தங்கள்",
     ihramDuas: "இஹ்ராம் துஆக்கள்",
     tawafDuas: "தவாஃப் துஆக்கள்",
     saiDuas: "ஸயீ துஆக்கள்",
@@ -290,13 +290,11 @@ export const translations = {
     updateEvery2Min: "இட புதுப்பிப்புகள் ஒவ்வொரு 2 நிமிடங்களுக்கும்",
     meters: "மீட்டர் தொலைவில்",
 
-    // NEW TRANSLATIONS FOR ANNOUNCEMENTS SCREEN
     announcements: "அறிவிப்புகள்",
     groupMessages: "முக்கிய குழு செய்திகள்",
     pinned: "பொருத்தப்பட்டது",
     newAnnouncement: "புதிய அறிவிப்பு",
 
-    // NEW TRANSLATIONS FOR DAILY PLAN SCREEN
     todaysPlan: "இன்றைய திட்டம்",
     yourProgress: "உங்கள் முன்னேற்றம்",
     of: "இல்",
@@ -306,7 +304,6 @@ export const translations = {
     dailyPlanReminder:
       "ஒவ்வொரு சடங்கையும் பொறுமையுடனும் பக்தியுடனும் முடிக்கவும். அல்லாஹ் உங்கள் வழிபாட்டை ஏற்றுக்கொள்வானாக.",
 
-    // NEW TRANSLATIONS FOR RITUAL GUIDE SCREEN
     ritualGuide: "சடங்கு வழிகாட்டி",
     guidanceWithLove: "அக்கறையுடனும் மரியாதையுடனும் வழிகாட்டுதல்",
     ritualGuideIntro:
@@ -366,6 +363,9 @@ export const translations = {
     wheelchairPaths: "وہیل چیئر راستے",
     zamzamPoints: "زم زم پانی",
     womenZones: "خواتین نماز کے زونز",
+    restaurants: "ریستوراں",
+    hospitals: "ہسپتال",
+    busStops: "بس اسٹاپ",
     ihramDuas: "احرام کی دعائیں",
     tawafDuas: "طواف کی دعائیں",
     saiDuas: "سعی کی دعائیں",
@@ -394,13 +394,11 @@ export const translations = {
     updateEvery2Min: "مقام کی تازہ کاریاں ہر 2 منٹ میں",
     meters: "میٹر دور",
 
-    // NEW TRANSLATIONS FOR ANNOUNCEMENTS SCREEN
     announcements: "اعلانات",
     groupMessages: "اہم گروپ پیغامات",
     pinned: "پن شدہ",
     newAnnouncement: "نیا اعلان",
 
-    // NEW TRANSLATIONS FOR DAILY PLAN SCREEN
     todaysPlan: "آج کا منصوبہ",
     yourProgress: "آپ کی پیشرفت",
     of: "میں سے",
@@ -410,7 +408,6 @@ export const translations = {
     dailyPlanReminder:
       "ہر مناسک کو صبر اور عقیدت سے مکمل کریں۔ اللہ آپ کی عبادت قبول فرمائے۔",
 
-    // NEW TRANSLATIONS FOR RITUAL GUIDE SCREEN
     ritualGuide: "مناسک کی رہنمائی",
     guidanceWithLove: "دیکھ بھال اور احترام کے ساتھ رہنمائی",
     ritualGuideIntro:
